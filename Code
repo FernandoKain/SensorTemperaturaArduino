@@ -1,4 +1,5 @@
 // Um  circuito eletrônico envolvendo um sensor de temperatura, uma buzina, um LED e um motor, controlados por meio de um Arduino.
+// https://www.tinkercad.com/things/9FUIzBRKRfN-swanky-bruticus/editel?tenant=circuits
 
 #include <wiringPi.h>
 #include <Adafruit_Sensor.h>
