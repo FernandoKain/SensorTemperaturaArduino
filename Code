@@ -1,0 +1,50 @@
+// Um  circuito eletrônico envolvendo um sensor de temperatura, uma buzina, um LED e um motor, controlados por meio de um Arduino.
+
+#include <wiringPi.h>
+#include <Adafruit_Sensor.h>
+#include <Adafruit_AM2320.h>
+
+#define FAN_PIN 0        // Pino do motor de ventilador
+#define LED_PIN 1        // Pino do LED vermelho
+#define BUZZER_PIN 2     // Pino da buzina
+
+Adafruit_AM2320 am2320 = Adafruit_AM2320();  // Cria uma instância do sensor AM2320
+
+int main() {
+    wiringPiSetup();    // Configuração do wiringPi
+    pinMode(FAN_PIN, OUTPUT);
+    pinMode(LED_PIN, OUTPUT);
+    pinMode(BUZZER_PIN, OUTPUT);
+
+    if (!am2320.begin()) {
+        printf("Falha ao iniciar o sensor AM2320");
+        return 1;
+    }
+
+    float temperature;  // Temperatura medida
+    while (1) {
+        temperature = am2320.readTemperature();  // Lê a temperatura atual
+
+        if (temperature >= 30) {
+            digitalWrite(FAN_PIN, HIGH);
+        } else {
+            digitalWrite(FAN_PIN, LOW);
+        }
+
+        if (temperature > 50) {
+            digitalWrite(LED_PIN, HIGH);
+            digitalWrite(BUZZER_PIN, HIGH);
+            delay(1000);
+            digitalWrite(LED_PIN, LOW);
+            digitalWrite(BUZZER_PIN, LOW);
+            delay(1000);
+        } else {
+            digitalWrite(LED_PIN, LOW);
+            digitalWrite(BUZZER_PIN, LOW);
+        }
+
+        delay(1000);  // Espera 1 segundo antes de ler a temperatura novamente
+    }
+
+    return 0;
+}
